@@ -1,0 +1,264 @@
+﻿@using İlan3.Models.ViewModels
+@model IlanViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>
+        Hürriyet'e Vefat İlanı Vermek
+    </title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="favicon.ico">
+    @*<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="css/style.css" rel="stylesheet" type="text/css">*@
+    <link href="~/assetss/css/styleIlan.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="contact-form">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="kutu kutu1">
+                    <div class="contact-form clearfix">
+                        <div class="newTitle">İLAN YAYIN BİLGİLERİ</div>
+                        <div id=" ">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label class="labelTitle">BASKI BÖLGESi</label>
+                                @foreach (var item in Model.Cities)
+                                {
+
+                                    <div class="yayinBolgeAlani">
+                                        <label class="rdYayinBolge">
+                                            @item.name
+                                            <input id="radio-@item.id" type="radio" name="deneme" value="@item.name" class="bolge">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="formArea">
+                                    <label class="formTitle">İLAN BOYUTU</label>
+                                    <input type="text" id="txtSecilenBolgeID" class="hide">
+                                    <input type="text" id="txtSecilenBolge" class="hide">
+                                    <select onchange="boyutaGoreFiyatHesapla(event)" id="boyut">
+                                        <option selected="selected" value="0"> İlan Boyutu Seçiniz</option>
+                                        @foreach (var item in Model.Boyutlar)
+                                        {
+                                            <option value="@item.tutar">@item.name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="requiedText"><i class="fa fa-warning"></i>Bu alan zorunlu</div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">İLAN YAYIN TARİHİ</label>
+                                <input placeholder="Tarih" type="text" id="dateInput">
+                                <button onclick="showDatePicker()">Tarih Seç</button>
+                                <div id="datePickerContainer" style="display: none;">
+                                    <input type="date" id="datePicker" oninput="updateTarih()">
+                                </div>
+                            </div>
+                            <div class="requiedText"><i class="fa fa-warning"></i>Bu alan zorunlu</div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">TUTAR</label>
+                                <input type="text" readonly="readonly" id="txtTutar" class="newFormInput txtPrice" placeholder="TUTAR">
+                                <input type="hidden" id="hdTutar">
+                            </div>
+                            <div class="requiedText"><i class="fa fa-warning"></i>Bu alan zorunlu</div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 ornekalani">
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="row">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="kutu">
+                    <div class="contact-form clearfix">
+                        <div class="newTitle">İLAN BİLGİLERİ</div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">İLAN BAŞLIĞI</label>
+                                <select id="drpBaslik" onchange="baslikSec()">
+
+                                    @foreach (var item in Model.IlanBaslıkları)
+                                    {
+                                        <option value="@item.id">@item.name</option>
+                                    }
+                                </select>
+                                <input type="text" maxlength="35" id="txtBaslikYeni" tabindex="100">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">TANITICI GİRİŞ</label>
+                                <textarea rows="10" cols="20" id="txtTaniticiYeni" class="newFormInput textBig" placeholder="TANITICI GİRİŞ" style="height:105px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">VEFAT EDEN KİŞİ</label>
+                                <input type="text" maxlength="40" id="txtVefatEdenKisi" class="newFormInput" placeholder="VEFAT EDEN KİŞİ">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">VEFAT VE CENAZE BİLGİLERİ</label>
+                                <textarea rows="10" cols="20" id="TxtBilgileriYeni" class="newFormInput textBig" placeholder="VEFAT VE CENAZE BİLGİLERİ" style="height:94px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">İLAN VEREN KİŞİ</label>
+
+                                <input type="text" maxlength="95" id="txtIlanVerenKisi" class="newFormInput" placeholder="İLAN VEREN KİŞİ">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">NOT (ÇELENK VS. BİLGİSİ)</label>
+
+                                <textarea rows="2" cols="20" id="TxtOzelNotYeni" class="newFormInput" placeholder="NOT (ÇELENK VS. BİLGİSİ)" style="height:84px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 ">
+                            <label class="labelTitle uploadarea">VEFAT EDEN KİŞİ</label>
+                            <div class="formArea">
+
+                                <input type="file" id="FlResimYeni" accept=".jpg, .jpeg, .png, .doc, .docx, .rtf">
+                                <div> </div>
+
+                            </div>
+                            <label class="formTitle formTitleResim">Vefat Eden Kişi Resmi</label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 formAreaQuestion">
+                            <label class="labelTitle uploadarea">FİRMA LOGOSU</label>
+                            <div class="formArea">
+                                <input type="file" id="FlResimYeni" accept=".jpg, .jpeg, .png, .doc, .docx, .rtf">
+                                <div> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="kutu">
+                    <div class="contact-form clearfix">
+                        <div class="newTitle">İLETİŞİM BİLGİLERİ</div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">ADINIZ SOYADINIZ</label>
+
+                                <input type="text" id="ContentPlaceHolder1_txtAdi" tabindex="10" class="newFormInput newFormInputRequied" placeholder="ADINIZ SOYADINIZ">
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">TELEFON NUMARANIZ</label>
+
+                                <input type="text" maxlength="11" id="ContentPlaceHolder1_txtTelefon" tabindex="12" class="newFormInput newFormInputRequied phoneNumber sadeceRakam" placeholder="TELEFON NUMARANIZ">
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">E-MAİL ADRESİNİZ</label>
+
+                                <input type="email" id="ContentPlaceHolder1_TxtEmailYeni" tabindex="13" class="newFormInput" placeholder="E-MAİL ADRESİNİZ">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="formArea">
+                                <label class="formTitle">BİZE ÖZEL NOTUNUZ</label>
+
+                                <textarea rows="2" cols="20" tabindex="15" class="newFormInput" placeholder="BİZE ÖZEL NOTUNUZ" style="height:85px;"></textarea>
+                            </div>
+                        </div>
+
+                        <input type="text" id="txtOdemeSekli" class="hide">
+                        <div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="formAreaDrop">
+                                    <label class="labelTitle">ÖDEME ŞEKLİ</label>
+                                    <div>
+                                        <div class="yayinOdemeAlani">
+                                            <label class="rdYayinOdeme">
+                                                Kredi Kartı (3D Güvenli Ödeme)
+                                                <input type="radio" value="radio7" checked="checked" data-value="1">
+                                                <span class="checkmarkOdeme"></span>
+                                            </label>
+                                        </div>
+                                        <div class="yayinOdemeAlani">
+                                            <label class="rdYayinOdeme">
+                                                HAVALE
+                                                <input type="radio" value="radio8" data-value="2">
+                                                <span class="checkmarkOdeme"></span>
+                                            </label>
+                                        </div>
+                                        <div class="yayinOdemeAlani">
+                                            <label class="rdYayinOdeme">
+                                                KAPIDA ODEME
+                                                <input type="radio" value="radio9" data-value="3">
+                                                <span class="checkmarkOdeme"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class=" ">
+                                <div class="formAreaSummaryTitle">İLAN ÖZETİ</div>
+                                <div class="formAreaSummary">
+                                    <div class=" ">
+                                        <ul>
+                                            <li>Yayın Bölgesi : <b class="showBolge" id="bolgeOzet"></b></li>
+                                            <li>İlan Boyutu : <b class="showBoyut" id="boyutOzet"></b></li>
+                                            <li>Yayın Tarihi : <b class="showTarih" id="tarihOzet"></b></li>
+                                            <li>Kdv Dahil Ödenecek Tutar : <b class="showPrice" id="priceOzet"></b></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 butonAlani">
+                            <input type="submit" tabindex="16" class="yeni-button">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <script src="~/assetss/js/JsIlan.js"></script>
+</body>
+</html>
+
+
+
+
+

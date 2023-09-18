@@ -1,0 +1,15 @@
+﻿
+@model IEnumerable<string>
+@{
+    ViewBag.Title = "İLAN YAYIN BİLGİLERİ";
+}
+
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <ul>
+        @foreach (var ilan in ViewBag.Ilanlar)
+        {
+            <li>@ilan</li>
+        }
+    </ul>
+</div>
